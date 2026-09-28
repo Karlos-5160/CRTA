@@ -1,4 +1,4 @@
-Absolutely. Since you’re learning cybersecurity and working with AD labs, the easiest way to understand **Active Directory (AD)** is to see it as a combination of:
+**Active Directory (AD)** is a combination of:
 
 **a database + authentication system + authorization system + DNS-based network directory + centralized management system.**
 
