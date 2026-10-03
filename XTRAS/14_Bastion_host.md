@@ -144,8 +144,6 @@ No. Not every server in a DMZ is a bastion host. A bastion host is a specific ty
 
 ## 1. Different servers in a DMZ
 
-## Different servers in a DMZ
-
 | 🌐 Web Server                                | 🛡️ Bastion Host                                               |
 | -------------------------------------------- | -------------------------------------------------------------- |
 | Hosts websites accessible from the internet. | Provides controlled administrative access to internal systems. |
