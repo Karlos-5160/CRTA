@@ -1,4 +1,4 @@
-# Basion Host 
+# Bastion Host 
 
 A Bastion Host is a specially secured computer or server that acts as a controlled entry point into a private network. It allows administrators to securely access internal servers without exposing those servers directly to the internet.
 
@@ -25,41 +25,53 @@ The exact placement depends on the organization's design. For example, a bastion
 
 Imagine a company has three internal servers that should not be directly accessible from the internet.
 
-Administrator's PC
+### Network Architecture
 
-Remote administrator
+```mermaid
+flowchart TD
+    A["💻 Administrator's PC<br/>Remote Administrator"]
+    B["🛡️ Bastion Host<br/>Hardened Entry Point<br/>DMZ / Management Zone"]
+    
+    subgraph P["Private Internal Network"]
+        C["🌐 Web Server"]
+        D["🗄️ Database"]
+        E["🖥️ File Server"]
+    end
 
-SSH / RDP + MFA
+    A -->|"SSH / RDP + MFA"| B
+    B -->|"Controlled, authenticated access"| C
+    B -->|"Controlled, authenticated access"| D
+    B -->|"Controlled, authenticated access"| E
 
-Bastion Host
+    style A fill:#1e293b,stroke:#64748b,color:#fff
+    style B fill:#14532d,stroke:#22c55e,color:#fff
+    style P fill:#172033,stroke:#64748b,color:#fff
+    style C fill:#1e293b,stroke:#64748b,color:#fff
+    style D fill:#1e293b,stroke:#64748b,color:#fff
+    style E fill:#1e293b,stroke:#64748b,color:#fff
+```
 
-Hardened entry point
+### How it works
 
-DMZ / Management Zone
+1. **Administrator's PC:** An administrator wants to access an internal server remotely.
+2. **Connection to Bastion Host:** The administrator connects to the bastion host using SSH or RDP, with strong authentication such as MFA.
+3. **Authentication:** The bastion host verifies the administrator's identity and access permissions.
+4. **Internal Access:** Once authenticated, the administrator can connect to permitted internal servers through the bastion host.
+5. **Monitoring:** The connections and administrative activities can be logged and monitored for auditing.
 
-Controlled, authenticated access
+### Example
 
-Private Internal Network
+Suppose a company has:
 
-Web Server
+* A Web Server
+* A Database Server
+* A File Server
 
-Database
+All three servers are in a private internal network and are not directly accessible from the internet.
 
-File Server
+An administrator first connects to the Bastion Host and then accesses the required internal server through it.
 
-Here's the process:
-
-1. An administrator wants to manage an internal server from their laptop.
-
-2. They connect to the bastion host, typically using SSH or RDP, with strong authentication such as MFA.
-
-3. After authentication, the bastion host allows them to access only the internal systems permitted by firewall rules and their account privileges.
-
-4. The administrator manages the internal server through this controlled connection.
-
-5. Access can be logged and monitored for auditing and investigation.
-
-The internal servers do not need to accept direct connections from the internet.
+**Key Point:** A Bastion Host acts as a secure, controlled entry point that reduces the need to expose internal servers directly to the internet.
 
 ## 3. Why do we use a Bastion Host?
 
@@ -132,23 +144,15 @@ No. Not every server in a DMZ is a bastion host. A bastion host is a specific ty
 
 ## 1. Different servers in a DMZ
 
-DMZ NETWORK
+## Different servers in a DMZ
 
-Web Server
+| 🌐 Web Server                                | 🛡️ Bastion Host                                               |
+| -------------------------------------------- | -------------------------------------------------------------- |
+| Hosts websites accessible from the internet. | Provides controlled administrative access to internal systems. |
+| ✉️ Mail Gateway                              | 🔀 Reverse Proxy                                               |
+| Filters and relays email traffic.            | Forwards incoming requests to backend servers.                 |
 
-Hosts a website accessible from the internet
 
-Bastion Host
-
-Controlled administrative access to internal systems
-
-Mail Gateway
-
-Filters and relays email traffic
-
-Reverse Proxy
-
-Forwards incoming requests to backend servers
 
 | Server        | Main purpose                                                                 |
 | ------------- | ---------------------------------------------------------------------------- |
